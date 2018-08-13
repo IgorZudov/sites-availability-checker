@@ -13,6 +13,7 @@ namespace SitesChecker.App.Controllers
 			//todo get sites
 			throw new NotImplementedException();
 		}
+		
 		[Authorize]
 		[Route("removesite")]
 		public IActionResult RemoveSite()
