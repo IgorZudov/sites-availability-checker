@@ -13,7 +13,6 @@ using SitesChecker.DataAccess.Models;
 
 namespace SitesChecker.App.Controllers
 {
-	//todo need add IdentityServer4
 	public class AccountController : Controller
 	{
 		//todo change to domain model or DTO

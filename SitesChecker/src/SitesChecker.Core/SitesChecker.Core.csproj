@@ -1,21 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocol.Extensions" Version="1.0.3.308261200" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\SitesChecker.DataAccess\SitesChecker.DataAccess.csproj" />
     <ProjectReference Include="..\SitesChecker.Domain\SitesChecker.Domain.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.hosting.abstractions\2.0.3\lib\netstandard2.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=2.0.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\..\..\..\..\.nuget\packages\microsoft.extensions.hosting.abstractions\2.0.3\lib\netstandard2.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.logging.abstractions\2.0.2\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
@@ -23,6 +22,8 @@
     <Reference Include="Microsoft.IdentityModel.Tokens">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.identitymodel.tokens\5.1.4\lib\netstandard1.4\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\..\..\..\.nuget\packages\microsoft.identitymodel.tokens\5.1.4\lib\netstandard1.4\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
   </ItemGroup>
-
 </Project>

@@ -6,7 +6,7 @@ namespace SitesChecker.Domain.Infrastructure
 {
 	public interface ISiteChecker
 	{
-		IEnumerable<MonitoringResult> Check(IEnumerable<SiteAvailability> sites);
+		IEnumerable<MonitoringResult> Check(List<SiteAvailability> sites);
 		Task<MonitoringResult> Check(SiteAvailability site);
 	}
 }

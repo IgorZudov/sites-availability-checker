@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SitesChecker.DataAccess;
+using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain;
 using SitesChecker.Domain.Infrastructure;
 
@@ -15,17 +17,26 @@ namespace SitesChecker.Core
 	{
 		private readonly ILogger logger;
 		private IDataContext dataContext;
+		private ISiteChecker siteChecker;
 		private Timer timer;
 		private IEnumerable<MonitoringResult> lastResults;
-		public MonitoringHostedService(ILoggerFactory loggerFactory, IDataContext dbContext)
+		public MonitoringHostedService(ILoggerFactory loggerFactory, IDataContext dbContext,ISiteChecker checker)
 		{
 			logger = loggerFactory.CreateLogger<MonitoringHostedService>();
 			dataContext = dbContext;
+			siteChecker = checker;
 		}
 
+		private void CheckResults(IEnumerable<MonitoringResult> results)
+		{
+			//todo checking changes and invoke event
+		}
+		
 		private void Monitore(object state)
 		{
-
+			logger.LogInformation("Start checking sites");
+			var sites = dataContext.Query<SiteAvailability>();
+			var result = siteChecker.Check(sites.ToList());
 		}
 
 		private bool IsResultsExist()
@@ -48,7 +59,7 @@ namespace SitesChecker.Core
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			timer?.Change(Timeout.Infinite, 0);
 		}
 
 		public IEnumerable<MonitoringResult> GetResults()

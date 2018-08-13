@@ -20,19 +20,19 @@ namespace SitesChecker.App.Controllers
 		}
 		
 		[Authorize]
-		[Route("removesite")]
+		[HttpDelete("removesite")]
 		public IActionResult RemoveSite()
 		{
 			throw new NotImplementedException();
 		}
 		[Authorize]
-		[Route("updatesite")]
+		[HttpPut("updatesite")]
 		public IActionResult UpdateSite()
 		{
 			throw new NotImplementedException();
 		}
 		[Authorize]
-		[Route("addsite")]
+		[HttpPost("addsite")]
 		public IActionResult AddSite()
 		{
 			throw new NotImplementedException();
