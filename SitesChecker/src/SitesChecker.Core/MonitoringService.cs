@@ -13,13 +13,14 @@ using SitesChecker.Domain.Infrastructure;
 
 namespace SitesChecker.Core
 {
-	public class MonitoringHostedService : IHostedService, IDisposable, IMonitoringService
+	public class MonitoringHostedService :  IDisposable, IMonitoringService
 	{
 		private readonly ILogger logger;
 		private IDataContext dataContext;
 		private ISiteChecker siteChecker;
 		private Timer timer;
 		private IEnumerable<MonitoringResult> lastResults;
+		
 		public MonitoringHostedService(ILoggerFactory loggerFactory, IDataContext dbContext,ISiteChecker checker)
 		{
 			logger = loggerFactory.CreateLogger<MonitoringHostedService>();
@@ -46,8 +47,9 @@ namespace SitesChecker.Core
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
+			var updateDelay = CoreConfiguration.Default.UpdateSitesDelay;
 			timer = new Timer(Monitore, null, TimeSpan.Zero,
-				TimeSpan.FromSeconds(5));
+				TimeSpan.FromSeconds(updateDelay));
 			return Task.CompletedTask;
 		}
 
