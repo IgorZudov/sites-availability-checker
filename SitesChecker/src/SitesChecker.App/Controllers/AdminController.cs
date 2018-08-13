@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SitesChecker.DataAccess;
 
 namespace SitesChecker.App.Controllers
 {
@@ -8,6 +9,10 @@ namespace SitesChecker.App.Controllers
 	[Route("api/[controller]")]
 	public class AdminController : Controller
 	{
+		public AdminController()
+		{
+			
+		}
 		public IActionResult Index()
 		{
 			//todo get sites

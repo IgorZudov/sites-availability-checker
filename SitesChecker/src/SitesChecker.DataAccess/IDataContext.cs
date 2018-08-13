@@ -7,7 +7,7 @@ namespace SitesChecker.DataAccess
 {
 	public interface IDataContext : IDisposable
 	{
-		void Create<T>(T entity) where T : class;
+		Task Create<T>(T entity) where T : class;
 
 		void Update<T>(T entity) where T : class;
 
@@ -18,8 +18,6 @@ namespace SitesChecker.DataAccess
 		void DeleteRange<T>(ICollection<T> entity) where T : class;
 
 		IQueryable<T> Query<T>() where T : class;
-
-		void Commit();
 
 		Task CommitAsync();
 

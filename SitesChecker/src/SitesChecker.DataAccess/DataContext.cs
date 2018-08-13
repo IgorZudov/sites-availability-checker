@@ -13,12 +13,12 @@ namespace SitesChecker.DataAccess
 
 		public DbSet<SiteAvailability> SiteAvailabilities { get; set; }
 
-		public void Create<T>(T entity) where T : class
+		public Task Create<T>(T entity) where T : class
 		{
-			Set<T>().Add(entity);
+			return Set<T>().AddAsync(entity);
 		}
 
-		public void Update<T>(T entity) where T : class
+		public  void Update<T>(T entity) where T : class
 		{
 			base.Update(entity);
 		}

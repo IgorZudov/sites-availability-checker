@@ -13,9 +13,6 @@ namespace SitesChecker.DataAccess.Models
 		/// URL сайта
 		/// </summary>
 		public  string Url { get; set; }
-		/// <summary>
-		/// Время изменения записи о сайте
-		/// </summary>
-		public DateTimeOffset ChangeDateTime { get; set; }
+	
 	}
 }
