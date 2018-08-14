@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using SitesChecker.App.Models;
+using SitesChecker.App.Utils;
 using SitesChecker.Domain.Infrastructure;
 
 namespace SitesChecker.App.Controllers
@@ -16,8 +20,8 @@ namespace SitesChecker.App.Controllers
 		
 		public IActionResult Index()
 		{
-			throw new NotImplementedException();
-			//return View(monitoringService.GetResults());
+			var results = monitoringService.GetResults().Select(_=>_.ToSiteViewModel());
+			return View(results.ToList());
 		}
 	}
 }

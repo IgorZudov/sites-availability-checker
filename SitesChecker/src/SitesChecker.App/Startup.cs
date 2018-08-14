@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
@@ -51,7 +52,16 @@ namespace SitesChecker.App
 
 	    private void InitDatabase(IDataContext dbContext)
 	    {
-
+		    var admin = dbContext.Query<User>().FirstOrDefault(_=>_.Login=="admin"&&_.Password=="admin");
+		    if (admin == null)
+		    {
+			    dbContext.Create(new User()
+			    {
+					Login = "admin",
+				    Password = "admin",
+				    Role = "admin"
+			    });
+		    }
 
 	    }
 	    
@@ -61,7 +71,8 @@ namespace SitesChecker.App
             {
                 app.UseDeveloperExceptionPage();
             }
-	        
+	        var routeBuilder = new RouteBuilder(app);
+	        routeBuilder.MapRoute("default", "api/statistic");
 	        app.UseDefaultFiles();
 	        app.UseStaticFiles();
 	        app.UseAuthentication();

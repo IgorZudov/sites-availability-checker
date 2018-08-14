@@ -4,11 +4,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SitesChecker.Core;
+using SitesChecker.DataAccess;
 using SitesChecker.DataAccess.Models;
 
 namespace SitesChecker.App.Controllers
@@ -16,12 +18,11 @@ namespace SitesChecker.App.Controllers
 	public class AccountController : Controller
 	{
 		//todo change to domain model or DTO
-		private readonly List<User> people = new List<User>
+		private IDataContext dataContext;
+		public AccountController(IDataContext dbContext)
 		{
-			new User {Login="admin@gmail.com", Password="12345", Role = "admin" },
-			new User { Login="qwerty", Password="55555", Role = "user" }
-		};
-
+			dataContext = dbContext;
+		}
 		[HttpPost("/token")]
 		public async Task Token()
 		{
@@ -59,7 +60,7 @@ namespace SitesChecker.App.Controllers
 
 		private ClaimsIdentity GetIdentity(string username, string password)
 		{
-			var user = people.FirstOrDefault(x => x.Login == username && x.Password == password);
+			var user = dataContext.Query<User>().FirstOrDefault(x => x.Login == username && x.Password == password);
 			if (user != null)
 			{
 				var claims = new List<Claim>

@@ -1,0 +1,28 @@
+﻿@using SitesChecker.App.Models
+@using SitesChecker.Domain
+@model List<SitesChecker.App.Models.SiteViewModel>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <table>
+        @foreach(SiteViewModel result in Model)
+        {
+            <tr>
+                <td>@result.Name.ToString()</td>
+                <td>@result.Url.ToString()</td>
+                <td>
+                    <input type="checkbox" asp-for="@result.IsAvailable"/> 
+                </td>
+            </tr>
+        }
+    </table>
+</head>
+<body>
+<div>
+    
+    
+</div>
+</body>
+</html>
