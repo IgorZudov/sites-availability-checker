@@ -9,11 +9,11 @@ using SitesChecker.Domain.Infrastructure;
 namespace SitesChecker.Tests.IntegrationTests
 {	
 	[TestFixture]
-	public class SiteCheckerIntegrationTest
+	public class UrlCheckerIntegrationTest
 	{
 		public IUrlChecker CreateChecker()
 		{
-			return new UrlChecker(Substitute.For<ILoggerFactory>(),Substitute.For<IResponseDataProvider>());
+			return new UrlChecker(Substitute.For<ILoggerFactory>(), new ResponseDataProvider());
 		}
 		
 		[Test]

@@ -63,6 +63,7 @@ namespace SitesChecker.Core
 			var updateDelay = CoreConfiguration.Default.UpdateSitesDelay;
 			timer = new Timer(Monitore, null, TimeSpan.Zero,
 				TimeSpan.FromSeconds(updateDelay));
+			Monitore(new object());
 			return Task.CompletedTask;
 		}
 

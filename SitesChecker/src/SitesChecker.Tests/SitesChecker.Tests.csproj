@@ -15,6 +15,7 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SitesChecker.Core\SitesChecker.Core.csproj" />
     <ProjectReference Include="..\SitesChecker.Domain\SitesChecker.Domain.csproj" />
   </ItemGroup>
 </Project>

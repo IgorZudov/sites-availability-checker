@@ -16,7 +16,7 @@ namespace SitesChecker.Tests.UnitTests
             result.Should().Be(true);
         }
 
-        [TestCase("facebook.com")]
+        [TestCase("facebookcom")]
         public void Should_NegativelyValidateUrls(string url)
         {
             var result = UrlHelper.IsUrlValid(url);

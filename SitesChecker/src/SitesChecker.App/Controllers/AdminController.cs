@@ -16,7 +16,6 @@ namespace SitesChecker.App.Controllers
 		public AdminController(IMonitoringService monitoringServ)
 		{
 			monitoringService = monitoringServ;
-			
 		}
 		
 		public IActionResult Index()

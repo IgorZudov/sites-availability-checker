@@ -12,6 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SitesChecker.Core;
 using SitesChecker.DataAccess;
+using SitesChecker.DataAccess.Models;
+using SitesChecker.Domain;
+using SitesChecker.Domain.Infrastructure;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace SitesChecker.App
@@ -20,9 +23,12 @@ namespace SitesChecker.App
     {
         public void ConfigureServices(IServiceCollection services)
         {
-	        services.AddScoped<IDataContext,DataContext>();
-			//services.AddHostedService<MonitoringService>();
-			services.AddScoped<IHostedService,MonitoringHostedService>();
+	        services.AddSingleton<IResponseDataProvider,ResponseDataProvider>();
+	        services.AddSingleton<IUrlChecker,UrlChecker>();
+	        services.AddSingleton<IMonitoringResultsComparer, MonitoringResultsComparer>();
+	        services.AddSingleton<IDataContext,DataContext>();
+			services.AddSingleton<IMonitoringService,MonitoringHostedService>();
+			services.AddSingleton<IHostedService,MonitoringHostedService>();
 
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		        .AddJwtBearer(options =>
@@ -43,23 +49,23 @@ namespace SitesChecker.App
 	        services.AddMvc();
 		}
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IHostedService monitoringService)
+	    private void InitDatabase(IDataContext dbContext)
+	    {
+
+
+	    }
+	    
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDataContext dataContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
 	        
 	        app.UseDefaultFiles();
 	        app.UseStaticFiles();
 	        app.UseAuthentication();
 	        app.UseMvc();
-
-			app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
 
 		}
     }
