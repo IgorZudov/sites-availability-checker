@@ -13,5 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SitesChecker.Core\SitesChecker.Core.csproj" />
     <ProjectReference Include="..\SitesChecker.DataAccess\SitesChecker.DataAccess.csproj" />
+    <ProjectReference Include="..\SitesChecker.Domain\SitesChecker.Domain.csproj" />
   </ItemGroup>
 </Project>

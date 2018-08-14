@@ -7,7 +7,7 @@ namespace SitesChecker.Domain
 	public class MonitoringResult
 	{
 		public SiteAvailability SiteInfo { get; }
-		public bool IsAvailable { get;  }
+		public bool IsAvailable { get; set; }
 
 		public MonitoringResult(SiteAvailability site, bool result)
 		{

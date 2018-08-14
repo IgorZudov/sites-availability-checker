@@ -4,7 +4,7 @@ using SitesChecker.DataAccess.Models;
 
 namespace SitesChecker.Domain.Infrastructure
 {
-	public interface ISiteChecker
+	public interface IUrlChecker
 	{
 		IEnumerable<MonitoringResult> Check(List<SiteAvailability> sites);
 		Task<MonitoringResult> Check(SiteAvailability site);

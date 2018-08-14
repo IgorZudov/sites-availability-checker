@@ -10,13 +10,16 @@ using SitesChecker.Domain.Utils;
 
 namespace SitesChecker.Domain
 {
-	public class SiteChecker:ISiteChecker
+	public class UrlChecker : IUrlChecker
 	{
 		private readonly ILogger logger;
-		public SiteChecker(ILoggerFactory loggerFactory)
+		private readonly IResponseDataProvider responseDataProvider;
+		public UrlChecker(ILoggerFactory loggerFactory, IResponseDataProvider responseProvider)
 		{
-			logger = loggerFactory.CreateLogger<SiteChecker>();
+			logger = loggerFactory.CreateLogger<UrlChecker>();
+			responseDataProvider = responseProvider;
 		}
+
 		public IEnumerable<MonitoringResult> Check(List<SiteAvailability> sites)
 		{
 			if (sites == null) throw new ArgumentNullException();
@@ -24,31 +27,38 @@ namespace SitesChecker.Domain
 			return sites.Select(site => Check(site).Result).ToList();
 		}
 
-		private bool IsResponceAvailable(HttpWebResponse response)
-		{
-			return !(response == null || response.StatusCode != HttpStatusCode.OK);
-		}
 		public async Task<MonitoringResult> Check(SiteAvailability site)
 		{
-			if (site==null) throw new ArgumentNullException();
+			if (site == null) throw new ArgumentNullException();
 			if (!UrlHelper.IsUrlValid(site.Url))
 			{
 				logger.LogWarning($"The {site.Url} is not valid URL");
-				return new MonitoringResult(site,false);
+				return new MonitoringResult(site, false);
 			}
+
 			return await Task.Factory.StartNew(() =>
 			{
-				var request = WebRequest.Create($"{site.Url}");
-				var response = (HttpWebResponse) (request.GetResponseAsync().Result);
-				if (IsResponceAvailable(response))
+				try
 				{
-					logger.LogInformation($"The {site.Url} is avaiable");
-					return new MonitoringResult(site, true);
+					var request = WebRequest.Create($"{site.Url}");
+					var response = (HttpWebResponse) (request.GetResponseAsync().Result);
+					if (responseDataProvider.IsResponseAvailable(response))
+					{
+						logger.LogInformation($"The {site.Url} is avaiable");
+						return new MonitoringResult(site, true);
+					}
 				}
+				catch (UriFormatException e)
+				{
+					logger.LogError($"The {site.Url} is not valid");
+					return new MonitoringResult(site, false);
+				}
+
 				logger.LogWarning($"The site {site.Url} is unavailable");
 				return new MonitoringResult(site, false);
-				
 			});
 		}
+
+		
 	}
 }

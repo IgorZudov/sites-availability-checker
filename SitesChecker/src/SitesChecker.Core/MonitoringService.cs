@@ -16,28 +16,41 @@ namespace SitesChecker.Core
 	public class MonitoringHostedService :  IDisposable, IMonitoringService
 	{
 		private readonly ILogger logger;
-		private IDataContext dataContext;
-		private ISiteChecker siteChecker;
+		private readonly IDataContext dataContext;
+		private readonly IUrlChecker urlChecker;
 		private Timer timer;
-		private IEnumerable<MonitoringResult> lastResults;
-		
-		public MonitoringHostedService(ILoggerFactory loggerFactory, IDataContext dbContext,ISiteChecker checker)
+		private List<MonitoringResult> lastResults;
+		private readonly IMonitoringResultsComparer resultsComparer;
+
+		public MonitoringHostedService(ILoggerFactory loggerFactory, IDataContext dbContext,IUrlChecker checker, IMonitoringResultsComparer comparer )
 		{
 			logger = loggerFactory.CreateLogger<MonitoringHostedService>();
 			dataContext = dbContext;
-			siteChecker = checker;
+			urlChecker = checker;
+			resultsComparer = comparer;
 		}
 
 		private void CheckResults(IEnumerable<MonitoringResult> results)
 		{
-			//todo checking changes and invoke event
+			if (lastResults == null)
+			{
+				lastResults = results.ToList();
+				MonitoringResultsChanged?.Invoke(lastResults);
+			}
+
+			var deletedResults = resultsComparer.GetDeletedResults(lastResults,results);
+			var toBeUpdatedResults = resultsComparer.GetUpdatedResults(lastResults, results);
+			var newResults = resultsComparer.GetNewResults(lastResults, results);
+			var isResultsChanged=resultsComparer.SetResults(lastResults,deletedResults,toBeUpdatedResults,newResults);
+			if(isResultsChanged) MonitoringResultsChanged?.Invoke(lastResults);
 		}
 		
 		private void Monitore(object state)
 		{
 			logger.LogInformation("Start checking sites");
 			var sites = dataContext.Query<SiteAvailability>();
-			var result = siteChecker.Check(sites.ToList());
+			var results = urlChecker.Check(sites.ToList());
+			CheckResults(results);
 		}
 
 		private bool IsResultsExist()

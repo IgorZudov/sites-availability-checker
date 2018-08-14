@@ -9,11 +9,11 @@ using SitesChecker.Domain.Infrastructure;
 namespace SitesChecker.Tests.IntegrationTests
 {	
 	[TestFixture]
-	public class SiteCheckerTest
+	public class SiteCheckerIntegrationTest
 	{
-		public ISiteChecker CreateChecker()
+		public IUrlChecker CreateChecker()
 		{
-			return new SiteChecker(Substitute.For<ILoggerFactory>());
+			return new UrlChecker(Substitute.For<ILoggerFactory>(),Substitute.For<IResponseDataProvider>());
 		}
 		
 		[Test]
@@ -30,11 +30,7 @@ namespace SitesChecker.Tests.IntegrationTests
 			result.IsAvailable.Should().Be(true);
 		}
 		
-		[TestCase("http://google.testtest")]
-		[TestCase("facebook.com")]
-		[TestCase("htps://silence.com.ua")]
-		[TestCase("ftp://123.ru")]
-		[TestCase("http://123.456")]
+		[TestCase("blabla")]
 		public void Should_NotCheckSite(string url)
 		{
 			var checker = CreateChecker();
