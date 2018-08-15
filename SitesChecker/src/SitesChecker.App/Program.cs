@@ -16,14 +16,23 @@ namespace SitesChecker.App
     {
 	    public static void Main(string[] args)
 	    {
-		    var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
-		    var pathToContentRoot = Path.GetDirectoryName(pathToExe);
-		    var host = WebHost.CreateDefaultBuilder(args)
-			    .UseContentRoot(pathToContentRoot)
-			    .UseStartup<Startup>()
-			    .Build();
-		    host.RunAsService();
-		    Console.ReadLine();
+		    CreateWebHostBuilder(args).Build().Run();
 	    }
-    }
+
+	    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+		    WebHost.CreateDefaultBuilder(args)
+			    .UseStartup<Startup>();
+    
+	//public static void Main(string[] args)
+	//{
+	// var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+	// var pathToContentRoot = Path.GetDirectoryName(pathToExe);
+	// var host = WebHost.CreateDefaultBuilder(args)
+	//  .UseContentRoot(pathToContentRoot)
+	//  .UseStartup<Startup>()
+	//  .Build();
+	// host.RunAsService();
+	// Console.ReadLine();
+	//}
+}
 }

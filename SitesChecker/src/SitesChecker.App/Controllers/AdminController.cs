@@ -2,8 +2,10 @@
 using System.Threading;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SitesChecker.Core;
 using SitesChecker.DataAccess;
+using SitesChecker.Domain;
 using SitesChecker.Domain.Infrastructure;
 
 namespace SitesChecker.App.Controllers
@@ -13,9 +15,11 @@ namespace SitesChecker.App.Controllers
 	public class AdminController : Controller
 	{
 		private IMonitoringService monitoringService;
-		public AdminController(IMonitoringService monitoringServ)
+		private RequestsDelay delay;
+		public AdminController(IMonitoringService monitoringServ, IOptionsSnapshot<RequestsDelay> delayConfig)
 		{
 			monitoringService = monitoringServ;
+			delay = delayConfig.Value;
 		}
 		
 		public IActionResult Index()
@@ -47,8 +51,7 @@ namespace SitesChecker.App.Controllers
 		[HttpPut("updatedelay")]
 		public IActionResult UpdateDelay(int value)
 		{
-			CoreConfiguration.Default.UpdateSitesDelay = value;
-			CoreConfiguration.Default.Save();
+			delay.Delay = value;
 			monitoringService.StopAsync(new CancellationToken());
 			monitoringService.StartAsync(new CancellationToken());
 			throw new NotImplementedException();

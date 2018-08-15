@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.Core;
 using NUnit.Framework;
@@ -23,7 +24,12 @@ namespace SitesChecker.Tests.UnitTests
     {
         public IMonitoringService GetService(IDataContext dataContext,IUrlChecker urlChecker, IMonitoringResultsComparer comparer)
         {
-            return new MonitoringHostedService(Substitute.For<ILoggerFactory>(),dataContext, urlChecker,comparer);
+	        var delay = Substitute.For<IOptionsSnapshot<RequestsDelay>>();
+	        delay.Value.Returns(new RequestsDelay()
+	        {
+		        Delay = 5
+	        });
+            return new MonitoringHostedService(Substitute.For<ILoggerFactory>(),dataContext, urlChecker,comparer, delay);
         }
 
         private SiteAvailability GetSite()

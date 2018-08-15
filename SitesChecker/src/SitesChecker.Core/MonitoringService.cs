@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SitesChecker.DataAccess;
 using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain;
@@ -21,13 +22,14 @@ namespace SitesChecker.Core
 		private Timer timer;
 		private List<MonitoringResult> lastResults;
 		private readonly IMonitoringResultsComparer resultsComparer;
-
-		public MonitoringHostedService(ILoggerFactory loggerFactory, IDataContext dbContext,IUrlChecker checker, IMonitoringResultsComparer comparer )
+		private RequestsDelay delay;
+		public MonitoringHostedService(ILoggerFactory loggerFactory, IDataContext dbContext,IUrlChecker checker, IMonitoringResultsComparer comparer, IOptionsSnapshot<RequestsDelay> delayConfig)
 		{
 			logger = loggerFactory.CreateLogger<MonitoringHostedService>();
 			dataContext = dbContext;
 			urlChecker = checker;
 			resultsComparer = comparer;
+			delay = delayConfig.Value;
 		}
 
 		private void CheckResults(IEnumerable<MonitoringResult> results)
@@ -60,7 +62,7 @@ namespace SitesChecker.Core
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			var updateDelay = CoreConfiguration.Default.UpdateSitesDelay;
+			var updateDelay = delay.Delay;
 			timer = new Timer(Monitore, null, TimeSpan.Zero,
 				TimeSpan.FromSeconds(updateDelay));
 			Monitore(new object());
