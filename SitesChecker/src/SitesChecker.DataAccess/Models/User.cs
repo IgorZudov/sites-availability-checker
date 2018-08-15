@@ -1,6 +1,4 @@
 ﻿
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
 namespace SitesChecker.DataAccess.Models
 {
 	public class User

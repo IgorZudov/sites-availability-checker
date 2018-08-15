@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SitesChecker.DataAccess.Models
+﻿namespace SitesChecker.DataAccess.Models
 {
 	public class SiteAvailability
 	{

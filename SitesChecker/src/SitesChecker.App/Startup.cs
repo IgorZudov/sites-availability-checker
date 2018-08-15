@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -58,14 +50,7 @@ namespace SitesChecker.App
 	        services.AddMvc();
 			
 		}
-
-	    public Startup(IHostingEnvironment env)
-	    {
-		    var builder = new ConfigurationBuilder()
-			    .SetBasePath(env.ContentRootPath)
-			    .AddJsonFile($"config/delayConfig.json", optional: false, reloadOnChange: true)
-			    .AddEnvironmentVariables();
-		}
+		
 
 	    private void InitDatabase(IDataContext dbContext)
 	    {

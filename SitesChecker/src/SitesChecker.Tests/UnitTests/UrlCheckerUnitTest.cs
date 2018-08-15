@@ -6,7 +6,6 @@ using System.Net;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain;
@@ -36,7 +35,7 @@ namespace SitesChecker.Tests.UnitTests
 		{
 			var checker = GetChecker(Substitute.For<IResponseDataProvider>());
 
-			Action act = () => checker.Check((List<SiteAvailability>)null);
+			Action act = () => checker.Check(null);
 
 			act.Should().Throw<ArgumentNullException>();
 		}

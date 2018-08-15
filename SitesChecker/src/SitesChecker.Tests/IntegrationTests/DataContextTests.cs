@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using SitesChecker.DataAccess;
 using SitesChecker.DataAccess.Models;
 

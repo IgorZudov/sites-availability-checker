@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SitesChecker.DataAccess.Models;
+﻿using SitesChecker.DataAccess.Models;
 
 namespace SitesChecker.Domain
 {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using SitesChecker.App.Models;
 using SitesChecker.App.Utils;
 using SitesChecker.Domain.Infrastructure;
 
@@ -11,7 +8,7 @@ namespace SitesChecker.App.Controllers
 	[Route("api/[controller]")]
 	public class StatisticController : Controller
 	{
-		private IMonitoringService monitoringService;
+		private readonly IMonitoringService monitoringService;
 		
 		public StatisticController(IMonitoringService monitoringServ)
 		{
