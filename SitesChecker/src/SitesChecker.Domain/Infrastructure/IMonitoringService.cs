@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace SitesChecker.Domain.Infrastructure
 {
-	public interface IMonitoringService:IHostedService
+	public interface IMonitoringService
 	{
 		/// <summary>
 		/// Возвращает результаты мониторинга, в случае их отсуствия возвращается пустая коллекция
@@ -17,5 +17,18 @@ namespace SitesChecker.Domain.Infrastructure
 		/// Событие изменения результатов мониторинга
 		/// </summary>
 		event Action<IEnumerable<MonitoringResult>> MonitoringResultsChanged;
+		/// <summary>
+		/// Возвращает промежуток времени между проверками
+		/// </summary>
+		/// <returns></returns>
+		int GetTimeDelay();
+		/// <summary>
+		/// Изменяет частоту обновления
+		/// </summary>
+		void UpdateTimeDelay(int delay);
+		/// <summary>
+		/// Обновляем состояние сайтов
+		/// </summary>
+		Task Update();
 	}
 }

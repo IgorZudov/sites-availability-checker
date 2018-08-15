@@ -1,0 +1,27 @@
+﻿
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div class="loginForm">
+    <h3>Вход на сайт</h3>
+    
+    @using (Html.BeginForm("Token", "Account", FormMethod.Post, 
+        new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        <label>Введите login</label><br />
+        <input type="text" id="username" /> <br /><br />
+        <label>Введите пароль</label><br />
+        <input type="password" id="password" /><br /><br />
+        <input type="submit" id="submitLogin" value="Логин" />
+    }
+
+    
+</div>
+</body>
+</html>

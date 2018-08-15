@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -46,7 +47,7 @@ namespace SitesChecker.Tests.UnitTests
 
 			Action act = () =>
 			{
-				var monitoringResult = checker.Check((SiteAvailability)null).Result;
+				var monitoringResult = checker.Check(null);
 			};
 			
 			act.Should().Throw<ArgumentNullException>();
@@ -60,9 +61,9 @@ namespace SitesChecker.Tests.UnitTests
 				.Returns(false);
 			var checker = GetChecker(provider);
 
-			var result=checker.Check(GetSite());
+			var result=checker.Check(new List<SiteAvailability>(){GetSite()});
 
-			result.Result.IsAvailable.Should().Be(false);
+			result.First().IsAvailable.Should().Be(false);
 		}
 		
 		[Test]
@@ -73,9 +74,9 @@ namespace SitesChecker.Tests.UnitTests
 				.Returns(true);
 			var checker = GetChecker(provider);
 
-			var result = checker.Check(GetSite());
+			var result = checker.Check(new List<SiteAvailability>() { GetSite() });
 
-			result.Result.IsAvailable.Should().Be(true);
+			result.First().IsAvailable.Should().Be(true);
 		}
 
 		

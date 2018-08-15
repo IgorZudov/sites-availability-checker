@@ -25,7 +25,6 @@ namespace SitesChecker.App
 {
     public class Startup
     {
-	    private IConfiguration Configuration;
         public void ConfigureServices(IServiceCollection services)
         {
 	        services.AddSingleton<IResponseDataProvider,ResponseDataProvider>();
@@ -33,15 +32,13 @@ namespace SitesChecker.App
 	        services.AddSingleton<IMonitoringResultsComparer, MonitoringResultsComparer>();
 	        services.AddSingleton<IDataContext,DataContext>();
 			services.AddSingleton<IMonitoringService,MonitoringHostedService>();
-			services.AddSingleton<IHostedService,MonitoringHostedService>();
-	        var loggerFactory = new LoggerFactory()
+	        services.AddHostedService<BackgroundService>();
+			var loggerFactory = new LoggerFactory()
 		        .AddSerilog();
 		       // .AddConsole(LogLevel.Trace);
 			//todo add file logger
 			services.AddSingleton<ILoggerFactory>(loggerFactory);
-
-	        services.Configure<RequestsDelay>(Configuration.GetSection("RequestsDelay"));
-
+			
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		        .AddJwtBearer(options =>
 		        {
@@ -68,11 +65,11 @@ namespace SitesChecker.App
 			    .SetBasePath(env.ContentRootPath)
 			    .AddJsonFile($"config/delayConfig.json", optional: false, reloadOnChange: true)
 			    .AddEnvironmentVariables();
-		    Configuration = builder.Build();
 		}
 
 	    private void InitDatabase(IDataContext dbContext)
 	    {
+			dbContext.InitDatabase();
 		    var admin = dbContext.Query<User>().FirstOrDefault(_=>_.Login=="admin"&&_.Password=="admin");
 		    if (admin == null)
 		    {
@@ -82,9 +79,20 @@ namespace SitesChecker.App
 				    Password = "admin",
 				    Role = "admin"
 			    });
+			    dbContext.CommitAsync();
 		    }
 
-	    }
+		    var sites = dbContext.Query<SiteAvailability>();
+		    if (!sites.Any())
+		    {
+				    dbContext.Create(new SiteAvailability()
+				    {
+					    Name = "YOUTUBE",
+					    Url = "http://youtube.com"
+				    });
+				    dbContext.CommitAsync();
+		    }
+		}
 	    
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDataContext dataContext)
         {
@@ -92,16 +100,19 @@ namespace SitesChecker.App
             {
                 app.UseDeveloperExceptionPage();
             }
-	        var routeBuilder = new RouteBuilder(app);
-	        routeBuilder.MapRoute("default", "api/statistic");
+			
+	        InitDatabase(dataContext);
 	        app.UseDefaultFiles();
 	        app.UseStaticFiles();
 	        app.UseAuthentication();
-	        app.UseMvc();
-	        app.Run(async (context) =>
-	        {
-		        await context.Response.WriteAsync("Hello World!");
-	        });
+			app.UseMvc(routes =>
+			{
+				routes.MapRoute(
+					name: "default",
+					template: "api/{controller}/{action?}/{id?}",
+					defaults: new {controller = "Statistic"}
+				);
+			});
 		}
     }
 }

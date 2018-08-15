@@ -6,14 +6,29 @@
 
 <html>
 <head>
-    <table>
-        @foreach(SiteViewModel result in Model)
+    <br />
+    <br />
+    <button class="btn btn-info" type="button" id="addressSearch"
+            onclick="location.href = '@Url.Action("Index", "Account")'">
+        Войти
+    </button>
+    <br />
+    <br />
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>URL</th>
+                <th>Доступность</th>
+            </tr>
+        </thead>
+        @foreach (SiteViewModel result in Model)
         {
             <tr>
                 <td>@result.Name.ToString()</td>
                 <td>@result.Url.ToString()</td>
                 <td>
-                    <input type="checkbox" asp-for="@result.IsAvailable"/> 
+                    <input type="checkbox" checked="@result.IsAvailable" />
                 </td>
             </tr>
         }

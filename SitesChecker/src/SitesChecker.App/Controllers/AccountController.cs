@@ -15,6 +15,7 @@ using SitesChecker.DataAccess.Models;
 
 namespace SitesChecker.App.Controllers
 {
+	[Route("api/account")]
 	public class AccountController : Controller
 	{
 		//todo change to domain model or DTO
@@ -23,6 +24,12 @@ namespace SitesChecker.App.Controllers
 		{
 			dataContext = dbContext;
 		}
+
+		public IActionResult Index()
+		{
+			return View();
+		}
+
 		[HttpPost("/token")]
 		public async Task Token()
 		{

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SitesChecker.App.Utils;
 using SitesChecker.Core;
 using SitesChecker.DataAccess;
 using SitesChecker.Domain;
@@ -10,8 +12,8 @@ using SitesChecker.Domain.Infrastructure;
 
 namespace SitesChecker.App.Controllers
 {
-	[Authorize]
-	[Route("api/[controller]")]
+	//[Authorize]
+	[Route("api/admin")]
 	public class AdminController : Controller
 	{
 		private IMonitoringService monitoringService;
@@ -24,38 +26,35 @@ namespace SitesChecker.App.Controllers
 		
 		public IActionResult Index()
 		{
-			//todo get sites
-			throw new NotImplementedException();
+			var monitoringResults = monitoringService.GetResults();
+			var results = monitoringResults.Select(_ => _.ToSiteViewModel()).ToList();
+			return View(results);
 		}
 		
-		[Authorize]
+		
 		[HttpDelete("removesite")]
 		public IActionResult RemoveSite()
 		{
 			throw new NotImplementedException();
 		}
-		[Authorize]
+		
 		[HttpPut("updatesite")]
 		public IActionResult UpdateSite()
 		{
 			throw new NotImplementedException();
 		}
-		[Authorize]
+	
 		[HttpPost("addsite")]
 		public IActionResult AddSite()
 		{
 			throw new NotImplementedException();
 		}
 		
-		[Authorize]
 		[HttpPut("updatedelay")]
 		public IActionResult UpdateDelay(int value)
 		{
 			delay.Delay = value;
-			monitoringService.StopAsync(new CancellationToken());
-			monitoringService.StartAsync(new CancellationToken());
 			throw new NotImplementedException();
 		}
-		
 	}
 }

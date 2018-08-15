@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
@@ -25,9 +27,9 @@ namespace SitesChecker.Tests.IntegrationTests
 				Url = "http://google.com"
 			};
 
-			var result=checker.Check(site).Result;
+			var result=checker.Check(new List<SiteAvailability>(){site});
 
-			result.IsAvailable.Should().Be(true);
+			result.First().IsAvailable.Should().Be(true);
 		}
 		
 		[TestCase("blabla")]
@@ -39,9 +41,9 @@ namespace SitesChecker.Tests.IntegrationTests
 				Url = url
 			};
 
-			var result=checker.Check(site).Result;
+			var result=checker.Check(new List<SiteAvailability>() { site });
 
-			result.IsAvailable.Should().Be(false);
+			result.First().IsAvailable.Should().Be(false);
 		}
 	}
 }

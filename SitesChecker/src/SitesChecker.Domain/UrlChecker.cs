@@ -20,14 +20,30 @@ namespace SitesChecker.Domain
 			responseDataProvider = responseProvider;
 		}
 
+		private async Task<List<MonitoringResult>> Run(ICollection<Task<MonitoringResult>> tasks)
+		{
+			var result = new List<MonitoringResult>();
+			while (tasks.Count > 0)
+			{
+				var firstFinishedTask = await Task.WhenAny(tasks);
+				tasks.Remove(firstFinishedTask);
+				result.Add(await firstFinishedTask);
+			}
+			return result;
+		}
 		public IEnumerable<MonitoringResult> Check(List<SiteAvailability> sites)
 		{
 			if (sites == null) throw new ArgumentNullException();
 			logger.LogInformation($"{sites.Count()}-site availability check request");
-			return sites.Select(site => Check(site).Result).ToList();
+			var tasks=new List<Task<MonitoringResult>>();
+			foreach (var site in sites)
+			{
+				tasks.Add(CheckAsync(site));
+			}
+			return Run(tasks).Result;
 		}
 
-		public async Task<MonitoringResult> Check(SiteAvailability site)
+		private async Task<MonitoringResult> CheckAsync(SiteAvailability site)
 		{
 			if (site == null) throw new ArgumentNullException();
 			if (!UrlHelper.IsUrlValid(site.Url))
@@ -51,6 +67,10 @@ namespace SitesChecker.Domain
 				catch (UriFormatException e)
 				{
 					logger.LogError($"The {site.Url} is not valid");
+					return new MonitoringResult(site, false);
+				}
+				catch (Exception e)
+				{
 					return new MonitoringResult(site, false);
 				}
 

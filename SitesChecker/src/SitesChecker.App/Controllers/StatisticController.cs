@@ -20,8 +20,9 @@ namespace SitesChecker.App.Controllers
 		
 		public IActionResult Index()
 		{
-			var results = monitoringService.GetResults().Select(_=>_.ToSiteViewModel());
-			return View(results.ToList());
+			var monitoringResults = monitoringService.GetResults();
+			var results = monitoringResults.Select(_=>_.ToSiteViewModel()).ToList();
+			return View(results);
 		}
 	}
 }
