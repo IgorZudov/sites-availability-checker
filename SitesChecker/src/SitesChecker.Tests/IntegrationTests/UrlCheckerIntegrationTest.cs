@@ -22,12 +22,12 @@ namespace SitesChecker.Tests.IntegrationTests
 		public void Should_CheckSite_Correctly()
 		{
 			var checker = CreateChecker();
-			var site =new  SiteAvailability()
+			var site =new  Site()
 			{
 				Url = "http://google.com"
 			};
 
-			var result=checker.Check(new List<SiteAvailability>(){site});
+			var result=checker.Check(new List<Site>(){site});
 
 			result.First().IsAvailable.Should().Be(true);
 		}
@@ -36,12 +36,12 @@ namespace SitesChecker.Tests.IntegrationTests
 		public void Should_NotCheckSite(string url)
 		{
 			var checker = CreateChecker();
-			var site = new  SiteAvailability()
+			var site = new  Site()
 			{
 				Url = url
 			};
 
-			var result=checker.Check(new List<SiteAvailability>() { site });
+			var result=checker.Check(new List<Site>() { site });
 
 			result.First().IsAvailable.Should().Be(false);
 		}

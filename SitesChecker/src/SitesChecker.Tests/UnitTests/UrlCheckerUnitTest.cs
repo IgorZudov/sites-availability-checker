@@ -21,9 +21,9 @@ namespace SitesChecker.Tests.UnitTests
 			return new UrlChecker(Substitute.For<ILoggerFactory>(), responseDataProvider);
 		}
 
-		SiteAvailability GetSite()
+		Site GetSite()
 		{
-			return new SiteAvailability()
+			return new Site()
 			{
 				Name = "test",
 				Url = "http://vk.com"
@@ -56,11 +56,11 @@ namespace SitesChecker.Tests.UnitTests
 		public void Should_ReturnUnsusccesResult()
 		{
 			var provider = Substitute.For<IResponseDataProvider>();
-			provider.IsResponseAvailable(Arg.Any<HttpWebResponse>())
+			provider.IsResponseAvailable(Arg.Any<string>())
 				.Returns(false);
 			var checker = GetChecker(provider);
 
-			var result=checker.Check(new List<SiteAvailability>(){GetSite()});
+			var result=checker.Check(new List<Site>(){GetSite()});
 
 			result.First().IsAvailable.Should().Be(false);
 		}
@@ -69,15 +69,14 @@ namespace SitesChecker.Tests.UnitTests
 		public void Should_ReturnSuccessResult()
 		{
 			var provider = Substitute.For<IResponseDataProvider>();
-			provider.IsResponseAvailable(Arg.Any<HttpWebResponse>())
+			provider.IsResponseAvailable(Arg.Any<string>())
 				.Returns(true);
 			var checker = GetChecker(provider);
 
-			var result = checker.Check(new List<SiteAvailability>() { GetSite() });
+			var result = checker.Check(new List<Site>() { GetSite() });
 
 			result.First().IsAvailable.Should().Be(true);
 		}
-
 		
 	}
 }

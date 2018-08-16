@@ -25,9 +25,9 @@ namespace SitesChecker.Tests.IntegrationTests
 				Role = "admin"
 			};
 	    }
-	    static SiteAvailability GetSiteAvailability()
+	    static Site GetSiteAvailability()
 	    {
-		    return new SiteAvailability()
+		    return new Site()
 		    {
 			    Name = "testSite",
 			    Url = "http://ya.com"
@@ -92,7 +92,7 @@ namespace SitesChecker.Tests.IntegrationTests
 		    context.Create(site);
 		    context.CommitAsync();
 
-		    var fromDbUser = context.Query<SiteAvailability>().FirstOrDefault(_ => _.Id == site.Id);
+		    var fromDbUser = context.Query<Site>().FirstOrDefault(_ => _.Id == site.Id);
 		    fromDbUser.Should().NotBeNull();
 
 		    context.Delete(site);
@@ -109,7 +109,7 @@ namespace SitesChecker.Tests.IntegrationTests
 		    context.Delete(site);
 		    context.CommitAsync();
 
-			var fromDbUser = context.Query<SiteAvailability>().FirstOrDefault(_ => _.Id == site.Id);
+			var fromDbUser = context.Query<Site>().FirstOrDefault(_ => _.Id == site.Id);
 		    fromDbUser.Should().BeNull();
 	    }
 
@@ -126,7 +126,7 @@ namespace SitesChecker.Tests.IntegrationTests
 		    context.Update(site);
 		    context.CommitAsync();
 
-			var fromDbUser = context.Query<SiteAvailability>().First(_ => _.Id == site.Id);
+			var fromDbUser = context.Query<Site>().First(_ => _.Id == site.Id);
 		    fromDbUser.Url.Should().Be(newUrl);
 
 		    context.Delete(fromDbUser);

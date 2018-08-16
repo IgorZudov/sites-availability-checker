@@ -28,8 +28,8 @@ namespace SitesChecker.App
 			services.AddScoped<IMonitoringService,MonitoringHostedService>();
 	        services.AddHostedService<BackgroundService>();
 			var loggerFactory = new LoggerFactory()
-		        .AddSerilog();
-		       //.AddConsole(LogLevel.Trace);
+		        .AddSerilog()
+		       .AddConsole(LogLevel.Trace);
 			//todo add file logger
 			services.AddSingleton<ILoggerFactory>(loggerFactory);
 

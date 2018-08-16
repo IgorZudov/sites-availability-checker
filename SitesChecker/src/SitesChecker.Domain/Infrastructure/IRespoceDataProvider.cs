@@ -4,6 +4,6 @@ namespace SitesChecker.Domain.Infrastructure
 {
 	public interface IResponseDataProvider
 	{
-		bool IsResponseAvailable(HttpWebResponse response);
+		bool IsResponseAvailable(string url);
 	}
 }

@@ -5,7 +5,7 @@ namespace SitesChecker.Domain.Infrastructure
 {
 	public interface IUrlChecker
 	{
-		IEnumerable<MonitoringResult> Check(List<SiteAvailability> sites);
+		IEnumerable<SiteAvailability> Check(List<Site> sites);
 	
 	}
 }

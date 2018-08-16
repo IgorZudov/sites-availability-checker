@@ -16,7 +16,6 @@
             onclick="location.href ='@Url.RouteUrl("./admin")'">
         Редактировать список сайтов
     </button>
- 
     <br />
     <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -28,13 +27,14 @@
         </thead>
         @foreach (SiteViewModel result in Model)
         {
-            <tr>
-                <td>@result.Name.ToString()</td>
-                <td>@result.Url.ToString()</td>
-                <td>
-                    <input type="checkbox" checked="@result.IsAvailable" readonly="readonly" />
-                </td>
-            </tr>
+        <tr>
+            <td>@result.Name.ToString()</td>
+            <td>@result.Url.ToString()</td>
+            <td>
+                <input type="checkbox" checked="@result.IsAvailable" readonly="readonly" />
+            </td>
+            <td>@result.LastUpdateTime.ToString("G")</td>
+        </tr>
         }
     </table>
 </head>
