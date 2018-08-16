@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,34 +21,24 @@ namespace SitesChecker.App
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DataContext>();
 	        services.AddSingleton<IResponseDataProvider,ResponseDataProvider>();
 	        services.AddSingleton<IUrlChecker,UrlChecker>();
-	        services.AddSingleton<IMonitoringResultsComparer, MonitoringResultsComparer>();
-	        services.AddSingleton<IDataContext,DataContext>();
-			services.AddSingleton<IMonitoringService,MonitoringHostedService>();
+	        services.AddScoped<IDataContext,DataContext>();
+			services.AddScoped<IMonitoringService,MonitoringHostedService>();
 	        services.AddHostedService<BackgroundService>();
 			var loggerFactory = new LoggerFactory()
 		        .AddSerilog();
-		       // .AddConsole(LogLevel.Trace);
+		       //.AddConsole(LogLevel.Trace);
 			//todo add file logger
 			services.AddSingleton<ILoggerFactory>(loggerFactory);
-			
-			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-		        .AddJwtBearer(options =>
-		        {
-			        options.RequireHttpsMetadata = false;
-			        options.TokenValidationParameters = new TokenValidationParameters
-			        {
-				        ValidateIssuer = true,
-				        ValidIssuer = AuthOptions.Issuer,
-						ValidateAudience = true,
-				        ValidAudience = AuthOptions.Audience,
-						ValidateLifetime = true,
-						IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-				        ValidateIssuerSigningKey = true,
-			        };
-		        });
 
+	        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+		        .AddCookie(options => 
+		        {
+					options.ExpireTimeSpan=TimeSpan.FromMinutes(2);
+			        options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+				});
 	        services.AddMvc();
 			
 		}
@@ -67,13 +59,14 @@ namespace SitesChecker.App
 			    dbContext.CommitAsync();
 		    }
 
-		    var sites = dbContext.Query<SiteAvailability>();
+		    var sites = dbContext.Query<Site>();
 		    if (!sites.Any())
 		    {
-				    dbContext.Create(new SiteAvailability()
+				    dbContext.Create(new Site()
 				    {
 					    Name = "YOUTUBE",
-					    Url = "http://youtube.com"
+					    Url = "http://youtube.com",
+						UpdateDelay = 5
 				    });
 				    dbContext.CommitAsync();
 		    }
@@ -94,8 +87,8 @@ namespace SitesChecker.App
 			{
 				routes.MapRoute(
 					name: "default",
-					template: "api/{controller}/{action?}/{id?}",
-					defaults: new {controller = "Statistic"}
+					template: "api/{controller=Statistic}/{action=Index}/{id?}"
+				
 				);
 			});
 		}

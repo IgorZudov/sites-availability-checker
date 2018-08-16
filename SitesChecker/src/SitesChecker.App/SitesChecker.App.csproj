@@ -4,6 +4,7 @@
     <UserSecretsId>634085a8-bf62-4088-82d5-0935f63d3894</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Pages\Admin\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>

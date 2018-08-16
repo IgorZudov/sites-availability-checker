@@ -1,23 +1,26 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SitesChecker.App.Utils;
+using SitesChecker.DataAccess;
+using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain.Infrastructure;
 
 namespace SitesChecker.App.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/statistic")]
 	public class StatisticController : Controller
 	{
-		private readonly IMonitoringService monitoringService;
+		private readonly IDataContext dataContext;
 		
-		public StatisticController(IMonitoringService monitoringServ)
+		public StatisticController(IDataContext dbContext)
 		{
-			monitoringService = monitoringServ;
+			dataContext = dbContext;
 		}
 		
 		public IActionResult Index()
 		{
-			var monitoringResults = monitoringService.GetResults();
+			var monitoringResults = dataContext.Query<SiteAvailability>().Include(_=>_.Site).ToList();
 			var results = monitoringResults.Select(_=>_.ToSiteViewModel()).ToList();
 			return View(results);
 		}

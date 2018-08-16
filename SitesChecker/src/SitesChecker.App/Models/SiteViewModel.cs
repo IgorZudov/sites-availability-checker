@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SitesChecker.App.Models
 {
@@ -9,6 +10,9 @@ namespace SitesChecker.App.Models
         public string Name { get; set; }
         [Display(Name="Url")]
         public string Url { get; set; }
+		[Display(Name = "Доступность")]
         public bool IsAvailable { get; set; }
+	    [Display(Name = "Время последнего обновления")]
+		public DateTimeOffset LastUpdateTime { get; set; }
     }
 }

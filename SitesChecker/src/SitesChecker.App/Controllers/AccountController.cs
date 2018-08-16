@@ -4,82 +4,70 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using SitesChecker.App.Models;
 using SitesChecker.Core;
 using SitesChecker.DataAccess;
 using SitesChecker.DataAccess.Models;
 
 namespace SitesChecker.App.Controllers
 {
-	[Route("api/account")]
+	[Route("account")]
 	public class AccountController : Controller
 	{
-		//todo change to domain model or DTO
-		private IDataContext dataContext;
+		private readonly IDataContext dataContext;
 		public AccountController(IDataContext dbContext)
 		{
 			dataContext = dbContext;
 		}
-
-		public IActionResult Index()
+		[HttpGet("Login")]
+		public IActionResult Login()
 		{
 			return View();
 		}
-
-		[HttpPost("/token")]
-		public async Task Token()
+		[HttpPost("Login")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Login(LoginModel model)
 		{
-			var username = Request.Form["username"];
-			var password = Request.Form["password"];
-
-			var identity = GetIdentity(username, password);
-			if (identity == null)
+			if (ModelState.IsValid)
 			{
-				Response.StatusCode = 400;
-				await Response.WriteAsync("Invalid username or password.");
-				return;
+				var user = await dataContext.Query<User>().FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
+				if (user != null)
+				{
+					var returnUrl=Request.Query["ReturnUrl"];
+					await Authenticate(model.Login);
+					if (Url.IsLocalUrl(returnUrl))
+						return Redirect(returnUrl);
+						return RedirectToAction("Index", "Statistic");
+				}
+				ModelState.AddModelError("", "Некорректные логин и(или) пароль");
 			}
-
-			var now = DateTime.UtcNow;
+			return View(model);
+		}
+		
+		private async Task Authenticate(string login)
+		{
 			
-			var jwt = new JwtSecurityToken(
-					issuer: AuthOptions.Issuer,
-					audience: AuthOptions.Audience,
-					notBefore: now,
-					claims: identity.Claims,
-					expires: now.Add(TimeSpan.FromMinutes(AuthOptions.Lifetime)),
-					signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-			var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-			var response = new
+			var claims = new List<Claim>
 			{
-				access_token = encodedJwt,
-				username = identity.Name
+				new Claim(ClaimsIdentity.DefaultNameClaimType, login)
 			};
 			
-			Response.ContentType = "application/json";
-			await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+			var id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
 		}
 
-		private ClaimsIdentity GetIdentity(string username, string password)
+		public async Task<IActionResult> Logout()
 		{
-			var user = dataContext.Query<User>().FirstOrDefault(x => x.Login == username && x.Password == password);
-			if (user != null)
-			{
-				var claims = new List<Claim>
-				{
-					new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-					new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
-				};
-				var claimsIdentity =
-				new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-					ClaimsIdentity.DefaultRoleClaimType);
-				return claimsIdentity;
-			}
-			return null;
+			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+			return RedirectToAction("Login", "Account");
 		}
+		
 	}
 }

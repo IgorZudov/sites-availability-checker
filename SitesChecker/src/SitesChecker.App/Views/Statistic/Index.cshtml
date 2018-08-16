@@ -1,6 +1,6 @@
 ﻿@using SitesChecker.App.Models
-@model List<SitesChecker.App.Models.SiteViewModel>
-
+@model List<SiteViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <!DOCTYPE html>
 
 <html>
@@ -8,10 +8,15 @@
     <br />
     <br />
     <button class="btn btn-info" type="button" id="addressSearch"
-            onclick="location.href = '@Url.Action("Index", "Account")'">
+            onclick="location.href = '@Url.Action("Login", "Account")'">
         Войти
     </button>
     <br />
+    <button class="btn btn-info" type="button" id="addressSearch" 
+            onclick="location.href ='@Url.RouteUrl("./admin")'">
+        Редактировать список сайтов
+    </button>
+ 
     <br />
     <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -27,16 +32,16 @@
                 <td>@result.Name.ToString()</td>
                 <td>@result.Url.ToString()</td>
                 <td>
-                    <input type="checkbox" checked="@result.IsAvailable" />
+                    <input type="checkbox" checked="@result.IsAvailable" readonly="readonly" />
                 </td>
             </tr>
         }
     </table>
 </head>
 <body>
-<div>
-    
-    
-</div>
+    <div>
+
+
+    </div>
 </body>
 </html>
