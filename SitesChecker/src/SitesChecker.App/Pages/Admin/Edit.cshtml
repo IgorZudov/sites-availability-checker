@@ -1,31 +1,30 @@
 ﻿@page
-@using SitesChecker.App.Pages.Admin
 @model SitesChecker.App.Pages.Admin.EditModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <h4>Site</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Site.Id" />
+            <input type="hidden" asp-for="Site.Id"/>
             <div class="form-group">
                 <label asp-for="Site.Name" class="control-label"></label>
-                <input asp-for="Site.Name" class="form-control" />
+                <input asp-for="Site.Name" class="form-control"/>
                 <span asp-validation-for="Site.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Site.Url" class="control-label"></label>
-                <input asp-for="Site.Url" class="form-control" />
+                <input asp-for="Site.Url" class="form-control"/>
                 <span asp-validation-for="Site.Url" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Site.UpdateDelay" class="control-label"></label>
-                <input asp-for="Site.UpdateDelay" class="form-control" />
+                <input asp-for="Site.UpdateDelay" class="form-control"/>
                 <span asp-validation-for="Site.UpdateDelay" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default"/>
             </div>
         </form>
     </div>
@@ -36,5 +35,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

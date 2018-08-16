@@ -3,7 +3,7 @@
 	public class RequestsDelay
 	{
 		/// <summary>
-		/// Пауза в секундах
+		///     Пауза в секундах
 		/// </summary>
 		public int Delay { get; set; }
 	}

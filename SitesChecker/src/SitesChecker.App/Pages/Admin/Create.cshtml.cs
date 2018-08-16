@@ -5,35 +5,33 @@ using SitesChecker.Domain.Models;
 
 namespace SitesChecker.App.Pages.Admin
 {
-	
-    public class CreateModel : PageModel
-    {
-        private readonly SitesChecker.DataAccess.DataContext _context;
+	public class CreateModel : PageModel
+	{
+		private readonly DataAccess.DataContext _context;
 
-        public CreateModel(SitesChecker.DataAccess.DataContext context)
-        {
-            _context = context;
-        }
+		[BindProperty]
+		public Site Site { get; set; }
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
+		public CreateModel(DataAccess.DataContext context)
+		{
+			_context = context;
+		}
 
-        [BindProperty]
-        public Site Site { get; set; }
+		public IActionResult OnGet()
+		{
+			return Page();
+		}
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+		public async Task<IActionResult> OnPostAsync()
+		{
+			if (!ModelState.IsValid)
+			{
+				return Page();
+			}
 
-            _context.Sites.Add(Site);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
-        }
-    }
+			_context.Sites.Add(Site);
+			await _context.SaveChangesAsync();
+			return RedirectToPage("./Index");
+		}
+	}
 }

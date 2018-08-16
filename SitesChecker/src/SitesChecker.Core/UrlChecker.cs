@@ -13,10 +13,24 @@ namespace SitesChecker.Core
 	{
 		private readonly ILogger logger;
 		private readonly IResponseDataProvider responseDataProvider;
+
 		public UrlChecker(ILoggerFactory loggerFactory, IResponseDataProvider responseProvider)
 		{
 			logger = loggerFactory.CreateLogger<UrlChecker>();
 			responseDataProvider = responseProvider;
+		}
+
+		public IEnumerable<SiteAvailability> Check(List<Site> sites)
+		{
+			if (sites == null) throw new ArgumentNullException();
+			logger.LogInformation($"{sites.Count()}-site availability check request");
+			var tasks = new List<Task<SiteAvailability>>();
+			foreach (var site in sites)
+			{
+				tasks.Add(CheckAsync(site));
+			}
+
+			return Run(tasks).Result;
 		}
 
 		private async Task<List<SiteAvailability>> Run(ICollection<Task<SiteAvailability>> tasks)
@@ -28,18 +42,8 @@ namespace SitesChecker.Core
 				tasks.Remove(firstFinishedTask);
 				result.Add(await firstFinishedTask);
 			}
+
 			return result;
-		}
-		public IEnumerable<SiteAvailability> Check(List<Site> sites)
-		{
-			if (sites == null) throw new ArgumentNullException();
-			logger.LogInformation($"{sites.Count()}-site availability check request");
-			var tasks=new List<Task<SiteAvailability>>();
-			foreach (var site in sites)
-			{
-				tasks.Add(CheckAsync(site));
-			}
-			return Run(tasks).Result;
 		}
 
 		private async Task<SiteAvailability> CheckAsync(Site site)
@@ -48,9 +52,9 @@ namespace SitesChecker.Core
 			if (!UrlHelper.IsUrlValid(site.Url))
 			{
 				logger.LogWarning($"The {site.Url} is not valid URL");
-				return new SiteAvailability(site,DateTimeOffset.Now, false);
+				return new SiteAvailability(site, DateTimeOffset.Now, false);
 			}
-
+		
 			return await Task.Factory.StartNew(() =>
 			{
 				try
@@ -75,7 +79,5 @@ namespace SitesChecker.Core
 				return new SiteAvailability(site, DateTimeOffset.Now, false);
 			});
 		}
-
-		
 	}
 }

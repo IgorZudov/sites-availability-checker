@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SitesChecker.App.Utils;
 using SitesChecker.DataAccess;
-using SitesChecker.Domain.Infrastructure;
 using SitesChecker.Domain.Models;
 
 namespace SitesChecker.App.Controllers
@@ -12,16 +11,16 @@ namespace SitesChecker.App.Controllers
 	public class StatisticController : Controller
 	{
 		private readonly IDataContext dataContext;
-		
+
 		public StatisticController(IDataContext dbContext)
 		{
 			dataContext = dbContext;
 		}
-		
+
 		public IActionResult Index()
 		{
-			var monitoringResults = dataContext.Query<SiteAvailability>().Include(_=>_.Site).ToList();
-			var results = monitoringResults.Select(_=>_.ToSiteViewModel()).ToList();
+			var monitoringResults = dataContext.Query<SiteAvailability>().Include(_ => _.Site).ToList();
+			var results = monitoringResults.Select(_ => _.ToSiteViewModel()).ToList();
 			return View(results);
 		}
 	}

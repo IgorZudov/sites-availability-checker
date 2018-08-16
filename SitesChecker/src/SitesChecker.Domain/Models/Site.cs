@@ -1,19 +1,19 @@
-﻿
-namespace SitesChecker.Domain.Models
+﻿namespace SitesChecker.Domain.Models
 {
 	public class Site
 	{
 		public int Id { get; set; }
+
 		/// <summary>
-		/// Название сайта
+		///     Название сайта
 		/// </summary>
 		public string Name { get; set; }
 		/// <summary>
-		/// URL сайта
+		///     URL сайта
 		/// </summary>
-		public  string Url { get; set; }
+		public string Url { get; set; }
 		/// <summary>
-		/// Время обновления доступности
+		///     Время обновления доступности
 		/// </summary>
 		public int UpdateDelay { get; set; }
 

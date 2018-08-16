@@ -14,21 +14,13 @@ namespace SitesChecker.DataAccess
 		public DbSet<Site> Sites { get; set; }
 
 		public DbSet<SiteAvailability> SiteAvailabilities { get; set; }
+
 		public Task Create<T>(T entity) where T : class
 		{
 			return Set<T>().AddAsync(entity);
 		}
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			modelBuilder.Entity<SiteAvailability>()
-				.HasOne(p => p.Site).WithOne().OnDelete(DeleteBehavior.Cascade);
-			modelBuilder.Entity<Site>()
-				.HasOne(p => p.Availability);
-			modelBuilder.Entity<SiteAvailability>().HasKey(u => u.Id);
-			modelBuilder.Entity<Site>().HasKey(u => u.Id);
-			modelBuilder.Entity<User>().HasKey(k => k.Id);
-		}
-		public  void Update<T>(T entity) where T : class
+
+		public void Update<T>(T entity) where T : class
 		{
 			base.Update(entity);
 		}
@@ -89,6 +81,17 @@ namespace SitesChecker.DataAccess
 		{
 			Database.Migrate();
 		}
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<SiteAvailability>()
+				.HasOne(p => p.Site).WithOne().OnDelete(DeleteBehavior.Cascade);
+			
+			modelBuilder.Entity<SiteAvailability>().HasKey(u => u.Id);
+			modelBuilder.Entity<Site>().HasKey(u => u.Id);
+			modelBuilder.Entity<User>().HasKey(k => k.Id);
+		}
+
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlite(@"Filename=Sites.db");

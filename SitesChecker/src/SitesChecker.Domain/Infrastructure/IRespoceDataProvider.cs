@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace SitesChecker.Domain.Infrastructure
+﻿namespace SitesChecker.Domain.Infrastructure
 {
 	public interface IResponseDataProvider
 	{

@@ -7,65 +7,62 @@ using SitesChecker.Domain.Models;
 
 namespace SitesChecker.App.Pages.Admin
 {
-    public class EditModel : PageModel
-    {
-        private readonly SitesChecker.DataAccess.DataContext _context;
+	public class EditModel : PageModel
+	{
+		private readonly DataAccess.DataContext _context;
 
-        public EditModel(SitesChecker.DataAccess.DataContext context)
-        {
-            _context = context;
-        }
+		[BindProperty]
+		public Site Site { get; set; }
 
-        [BindProperty]
-        public Site Site { get; set; }
+		public EditModel(DataAccess.DataContext context)
+		{
+			_context = context;
+		}
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		public async Task<IActionResult> OnGetAsync(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-            Site = await _context.Sites.SingleOrDefaultAsync(m => m.Id == id);
+			Site = await _context.Sites.SingleOrDefaultAsync(m => m.Id == id);
+			if (Site == null)
+			{
+				return NotFound();
+			}
 
-            if (Site == null)
-            {
-                return NotFound();
-            }
-            return Page();
-        }
+			return Page();
+		}
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+		public async Task<IActionResult> OnPostAsync()
+		{
+			if (!ModelState.IsValid)
+			{
+				return Page();
+			}
 
-            _context.Attach(Site).State = EntityState.Modified;
+			_context.Attach(Site).State = EntityState.Modified;
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!SiteExists(Site.Id))
+				{
+					return NotFound();
+				}
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SiteExists(Site.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+				throw;
+			}
 
-            return RedirectToPage("./Index");
-        }
+			return RedirectToPage("./Index");
+		}
 
-        private bool SiteExists(int id)
-        {
-            return _context.Sites.Any(e => e.Id == id);
-        }
-    }
+		private bool SiteExists(int id)
+		{
+			return _context.Sites.Any(e => e.Id == id);
+		}
+	}
 }

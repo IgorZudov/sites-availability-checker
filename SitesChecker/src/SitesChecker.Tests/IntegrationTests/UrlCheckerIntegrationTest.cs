@@ -5,12 +5,11 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using SitesChecker.Core;
-using SitesChecker.Domain;
 using SitesChecker.Domain.Infrastructure;
 using SitesChecker.Domain.Models;
 
 namespace SitesChecker.Tests.IntegrationTests
-{	
+{
 	[TestFixture]
 	public class UrlCheckerIntegrationTest
 	{
@@ -18,33 +17,29 @@ namespace SitesChecker.Tests.IntegrationTests
 		{
 			return new UrlChecker(Substitute.For<ILoggerFactory>(), new ResponseDataProvider());
 		}
-		
-		[Test]
-		public void Should_CheckSite_Correctly()
-		{
-			var checker = CreateChecker();
-			var site =new  Site()
-			{
-				Url = "http://google.com"
-			};
 
-			var result=checker.Check(new List<Site>(){site});
-
-			result.First().IsAvailable.Should().Be(true);
-		}
-		
 		[TestCase("blabla")]
 		public void Should_NotCheckSite(string url)
 		{
 			var checker = CreateChecker();
-			var site = new  Site()
+			var site = new Site
 			{
 				Url = url
 			};
-
-			var result=checker.Check(new List<Site>() { site });
-
+			var result = checker.Check(new List<Site> {site});
 			result.First().IsAvailable.Should().Be(false);
+		}
+
+		[Test]
+		public void Should_CheckSite_Correctly()
+		{
+			var checker = CreateChecker();
+			var site = new Site
+			{
+				Url = "http://google.com"
+			};
+			var result = checker.Check(new List<Site> {site});
+			result.First().IsAvailable.Should().Be(true);
 		}
 	}
 }

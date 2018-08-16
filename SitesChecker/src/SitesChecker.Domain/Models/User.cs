@@ -1,19 +1,19 @@
-﻿
-namespace SitesChecker.Domain.Models
+﻿namespace SitesChecker.Domain.Models
 {
 	public class User
 	{
 		public int Id { get; set; }
+
 		/// <summary>
-		/// Логин пользователя
+		///     Логин пользователя
 		/// </summary>
 		public string Login { get; set; }
 		/// <summary>
-		/// Пароль пользователя
+		///     Пароль пользователя
 		/// </summary>
 		public string Password { get; set; }
 		/// <summary>
-		/// Роль пользователя
+		///     Роль пользователя
 		/// </summary>
 		public string Role { get; set; }
 	}

@@ -1,47 +1,50 @@
 ﻿@using SitesChecker.App.Models
-@model List<SiteViewModel>
+@model List<SitesChecker.App.Models.SiteViewModel>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <!DOCTYPE html>
 
 <html>
 <head>
-    <br />
-    <br />
+    <br/>
+    <br/>
     <button class="btn btn-info" type="button" id="addressSearch"
             onclick="location.href = '@Url.Action("Login", "Account")'">
         Войти
     </button>
-    <br />
-    <button class="btn btn-info" type="button" id="addressSearch" 
-            onclick="location.href ='@Url.RouteUrl("./admin")'">
+    <br/>
+    <button class="btn btn-info" type="button" id="addressSearch"
+            onclick="location.href = '@Url.RouteUrl("./admin")'">
         Редактировать список сайтов
     </button>
-    <br />
+    <br/>
     <table class="table table-bordered table-striped table-condensed">
         <thead>
-            <tr>
-                <th>Название</th>
-                <th>URL</th>
-                <th>Доступность</th>
-            </tr>
-        </thead>
-        @foreach (SiteViewModel result in Model)
-        {
         <tr>
-            <td>@result.Name.ToString()</td>
-            <td>@result.Url.ToString()</td>
-            <td>
-                <input type="checkbox" checked="@result.IsAvailable" readonly="readonly" />
-            </td>
-            <td>@result.LastUpdateTime.ToString("G")</td>
+            <th>Название</th>
+            <th>URL</th>
+            <th>Доступность</th>
+            <th>Последняя проверка</th>
         </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (SiteViewModel result in Model)
+            {
+                <tr>
+                    <td>@result.Name</td>
+                    <td>@result.Url</td>
+                    <td>
+                        <input type="checkbox" checked="@result.IsAvailable" readonly="readonly" />
+                    </td>
+                    <td>@result.LastUpdateTime.ToString("G")</td>
+                </tr>
+            }
+        </tbody>
     </table>
 </head>
 <body>
-    <div>
+<div>
 
 
-    </div>
+</div>
 </body>
 </html>

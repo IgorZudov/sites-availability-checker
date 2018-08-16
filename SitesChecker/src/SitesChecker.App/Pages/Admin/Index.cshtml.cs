@@ -8,20 +8,20 @@ using SitesChecker.Domain.Models;
 namespace SitesChecker.App.Pages.Admin
 {
 	[Authorize]
-    public class IndexModel : PageModel
-    {
-        private readonly SitesChecker.DataAccess.DataContext _context;
+	public class IndexModel : PageModel
+	{
+		private readonly DataAccess.DataContext _context;
 
-        public IndexModel(SitesChecker.DataAccess.DataContext context)
-        {
-            _context = context;
-        }
+		public IList<Site> Site { get; set; }
 
-        public IList<Site> Site { get;set; }
+		public IndexModel(DataAccess.DataContext context)
+		{
+			_context = context;
+		}
 
-        public async Task OnGetAsync()
-        {
-            Site = await _context.Sites.ToListAsync();
-        }
-    }
+		public async Task OnGetAsync()
+		{
+			Site = await _context.Sites.ToListAsync();
+		}
+	}
 }

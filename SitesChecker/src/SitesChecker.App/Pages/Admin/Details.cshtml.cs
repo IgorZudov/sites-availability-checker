@@ -6,31 +6,31 @@ using SitesChecker.Domain.Models;
 
 namespace SitesChecker.App.Pages.Admin
 {
-    public class DetailsModel : PageModel
-    {
-        private readonly SitesChecker.DataAccess.DataContext _context;
+	public class DetailsModel : PageModel
+	{
+		private readonly DataAccess.DataContext _context;
 
-        public DetailsModel(SitesChecker.DataAccess.DataContext context)
-        {
-            _context = context;
-        }
+		public Site Site { get; set; }
 
-        public Site Site { get; set; }
+		public DetailsModel(DataAccess.DataContext context)
+		{
+			_context = context;
+		}
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		public async Task<IActionResult> OnGetAsync(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-            Site = await _context.Sites.SingleOrDefaultAsync(m => m.Id == id);
+			Site = await _context.Sites.SingleOrDefaultAsync(m => m.Id == id);
+			if (Site == null)
+			{
+				return NotFound();
+			}
 
-            if (Site == null)
-            {
-                return NotFound();
-            }
-            return Page();
-        }
-    }
+			return Page();
+		}
+	}
 }
