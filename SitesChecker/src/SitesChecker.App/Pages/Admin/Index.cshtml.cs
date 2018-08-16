@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using SitesChecker.DataAccess;
-using SitesChecker.DataAccess.Models;
+using SitesChecker.Domain.Models;
 
-namespace SitesChecker.App.Pages
+namespace SitesChecker.App.Pages.Admin
 {
 	[Authorize]
     public class IndexModel : PageModel

@@ -2,7 +2,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using SitesChecker.DataAccess;
-using SitesChecker.DataAccess.Models;
+using SitesChecker.Domain.Models;
 
 namespace SitesChecker.Tests.IntegrationTests
 {

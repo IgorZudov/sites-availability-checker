@@ -4,9 +4,10 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NUnit.Framework;
-using SitesChecker.DataAccess.Models;
+using SitesChecker.Core;
 using SitesChecker.Domain;
 using SitesChecker.Domain.Infrastructure;
+using SitesChecker.Domain.Models;
 
 namespace SitesChecker.Tests.IntegrationTests
 {	

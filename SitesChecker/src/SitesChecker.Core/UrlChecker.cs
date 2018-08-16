@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain.Infrastructure;
+using SitesChecker.Domain.Models;
 using SitesChecker.Domain.Utils;
 
-namespace SitesChecker.Domain
+namespace SitesChecker.Core
 {
 	public class UrlChecker : IUrlChecker
 	{

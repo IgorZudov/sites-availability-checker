@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SitesChecker.DataAccess;
-using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain;
 using SitesChecker.Domain.Infrastructure;
+using SitesChecker.Domain.Models;
 
 namespace SitesChecker.Core
 {

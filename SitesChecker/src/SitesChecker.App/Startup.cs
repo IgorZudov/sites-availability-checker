@@ -10,9 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using SitesChecker.Core;
 using SitesChecker.DataAccess;
-using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain;
 using SitesChecker.Domain.Infrastructure;
+using SitesChecker.Domain.Models;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace SitesChecker.App

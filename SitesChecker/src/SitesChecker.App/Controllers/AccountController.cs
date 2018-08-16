@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 using SitesChecker.App.Models;
 using SitesChecker.Core;
 using SitesChecker.DataAccess;
-using SitesChecker.DataAccess.Models;
+using SitesChecker.Domain.Models;
 
 namespace SitesChecker.App.Controllers
 {

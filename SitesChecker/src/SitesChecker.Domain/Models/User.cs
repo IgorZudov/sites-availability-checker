@@ -1,5 +1,5 @@
 ﻿
-namespace SitesChecker.DataAccess.Models
+namespace SitesChecker.Domain.Models
 {
 	public class User
 	{

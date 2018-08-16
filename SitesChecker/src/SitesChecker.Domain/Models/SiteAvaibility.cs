@@ -1,7 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SitesChecker.DataAccess.Models
+namespace SitesChecker.Domain.Models
 {
 	public class SiteAvailability
 	{

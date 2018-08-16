@@ -1,6 +1,6 @@
 ﻿using SitesChecker.App.Models;
-using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain;
+using SitesChecker.Domain.Models;
 
 namespace SitesChecker.App.Utils
  {

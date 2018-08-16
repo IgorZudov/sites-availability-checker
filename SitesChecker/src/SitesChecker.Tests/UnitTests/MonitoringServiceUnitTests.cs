@@ -7,9 +7,9 @@ using NSubstitute;
 using NUnit.Framework;
 using SitesChecker.Core;
 using SitesChecker.DataAccess;
-using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain;
 using SitesChecker.Domain.Infrastructure;
+using SitesChecker.Domain.Models;
 
 namespace SitesChecker.Tests.UnitTests
 {

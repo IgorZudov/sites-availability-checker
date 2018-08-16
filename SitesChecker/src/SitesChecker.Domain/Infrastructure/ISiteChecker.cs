@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SitesChecker.DataAccess.Models;
+using SitesChecker.Domain.Models;
 
 namespace SitesChecker.Domain.Infrastructure
 {

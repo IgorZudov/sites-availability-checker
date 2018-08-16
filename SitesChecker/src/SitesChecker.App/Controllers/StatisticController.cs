@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SitesChecker.App.Utils;
 using SitesChecker.DataAccess;
-using SitesChecker.DataAccess.Models;
 using SitesChecker.Domain.Infrastructure;
+using SitesChecker.Domain.Models;
 
 namespace SitesChecker.App.Controllers
 {

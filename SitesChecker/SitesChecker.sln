@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitesChecker.Core", "src\Si
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitesChecker.Domain", "src\SitesChecker.Domain\SitesChecker.Domain.csproj", "{241185F1-8956-47A0-893B-08F8E350F3F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitesChecker.DbInit", "src\SitesChecker.DbInit\SitesChecker.DbInit.csproj", "{2503B20D-99C9-40BD-9DB7-EA7D99DD2338}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,10 +39,6 @@ Global
 		{241185F1-8956-47A0-893B-08F8E350F3F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{241185F1-8956-47A0-893B-08F8E350F3F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{241185F1-8956-47A0-893B-08F8E350F3F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2503B20D-99C9-40BD-9DB7-EA7D99DD2338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2503B20D-99C9-40BD-9DB7-EA7D99DD2338}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2503B20D-99C9-40BD-9DB7-EA7D99DD2338}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2503B20D-99C9-40BD-9DB7-EA7D99DD2338}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

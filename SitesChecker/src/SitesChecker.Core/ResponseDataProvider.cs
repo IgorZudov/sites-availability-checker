@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using SitesChecker.Domain.Infrastructure;
 
-namespace SitesChecker.Domain
+namespace SitesChecker.Core
 {
 	public class ResponseDataProvider: IResponseDataProvider
 	{
