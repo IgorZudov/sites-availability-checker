@@ -6,14 +6,9 @@
 <html>
 <head>
     <br/>
-    <br/>
-    <button class="btn btn-info" type="button" id="addressSearch"
-            onclick="location.href = '@Url.Action("Login", "Account")'">
-        Войти
-    </button>
-    <br/>
-    <button class="btn btn-info" type="button" id="addressSearch"
-            onclick="location.href = '@Url.RouteUrl("./admin")'">
+    
+    <button class="btn btn-info" type="button" id="adminButton"
+            onclick="location.href='/admin'">
         Редактировать список сайтов
     </button>
     <br/>
@@ -27,17 +22,17 @@
         </tr>
         </thead>
         <tbody>
-            @foreach (SiteViewModel result in Model)
-            {
-                <tr>
-                    <td>@result.Name</td>
-                    <td>@result.Url</td>
-                    <td>
-                        <input type="checkbox" checked="@result.IsAvailable" readonly="readonly" />
-                    </td>
-                    <td>@result.LastUpdateTime.ToString("G")</td>
-                </tr>
-            }
+        @foreach (SiteViewModel result in Model)
+        {
+            <tr>
+                <td>@result.Name</td>
+                <td>@result.Url</td>
+                <td>
+                    <input type="checkbox" checked="@result.IsAvailable" readonly="readonly"/>
+                </td>
+                <td>@result.LastUpdateTime.ToString("G")</td>
+            </tr>
+        }
         </tbody>
     </table>
 </head>
