@@ -52,32 +52,28 @@ namespace SitesChecker.Core
 			if (!UrlHelper.IsUrlValid(site.Url))
 			{
 				logger.LogWarning($"The {site.Url} is not valid URL");
-				return new SiteAvailability(site, DateTimeOffset.Now, false);
+				return SiteAvailability.NotAvailabile(site, DateTimeOffset.Now);
 			}
-		
-			return await Task.Factory.StartNew(() =>
-			{
 				try
 				{
-					if (responseDataProvider.IsResponseAvailable(site.Url))
+					if (await responseDataProvider.IsResponseAvailable(site.Url))
 					{
 						logger.LogInformation($"The {site.Url} is avaiable");
-						return new SiteAvailability(site, DateTimeOffset.Now, true);
+						return SiteAvailability.Availabile(site, DateTimeOffset.Now);
 					}
 				}
-				catch (UriFormatException e)
+				catch (UriFormatException)
 				{
 					logger.LogError($"The {site.Url} is not valid");
-					return new SiteAvailability(site, DateTimeOffset.Now, false);
+					return SiteAvailability.NotAvailabile(site, DateTimeOffset.Now);
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
-					return new SiteAvailability(site, DateTimeOffset.Now, false);
+					return SiteAvailability.NotAvailabile(site, DateTimeOffset.Now);
 				}
 
 				logger.LogWarning($"The site {site.Url} is unavailable");
-				return new SiteAvailability(site, DateTimeOffset.Now, false);
-			});
+				return SiteAvailability.NotAvailabile(site, DateTimeOffset.Now);
 		}
 	}
 }

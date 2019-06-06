@@ -1,7 +1,9 @@
-﻿namespace SitesChecker.Domain.Infrastructure
+﻿using System.Threading.Tasks;
+
+namespace SitesChecker.Domain.Infrastructure
 {
 	public interface IResponseDataProvider
 	{
-		bool IsResponseAvailable(string url);
+		Task<bool> IsResponseAvailable(string url);
 	}
 }

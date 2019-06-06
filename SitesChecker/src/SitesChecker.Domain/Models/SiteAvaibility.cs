@@ -15,12 +15,25 @@ namespace SitesChecker.Domain.Models
 		public SiteAvailability()
 		{
 		}
-
-		public SiteAvailability(Site site, DateTimeOffset updateTime, bool isaVAilable)
+		
+		public static SiteAvailability NotAvailabile(Site site, DateTimeOffset updateTime)
 		{
-			Site = site;
-			LastUpdate = updateTime;
-			IsAvailable = isaVAilable;
+			return new SiteAvailability
+			{
+				Site = site,
+				LastUpdate = updateTime,
+				IsAvailable = false
+			};
+		}
+		
+		public static SiteAvailability Availabile(Site site, DateTimeOffset updateTime)
+		{
+			return new SiteAvailability
+			{
+				Site = site,
+				LastUpdate = updateTime,
+				IsAvailable = true
+			};
 		}
 	}
 }
